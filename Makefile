@@ -100,10 +100,10 @@ test_coord: test_coord.o coord.o
 test_grille: test_grille.o grille.o coord.o
 	$(LD) $^ -o $@ $(TESTLDFLAGS)
 
-test_liste_noeud: test_liste_noeud.o coord.o grille.o liste_noeud.o
+test_liste_noeud: test_liste_noeud.o coord.o grille.o liste_noeud.o 
 	$(LD) $^ -o $@ $(TESTLDFLAGS)
 
-test_dijkstra: test_dijkstra.o coord.o grille.o liste_noeud.o dijkstra.o
+test_dijkstra: test_dijkstra.o coord.o grille.o liste_noeud.o dijkstra.o 
 	$(LD) $^ -o $@ $(TESTLDFLAGS)
 
 main.o: main.c

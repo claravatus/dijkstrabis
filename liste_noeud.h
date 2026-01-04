@@ -6,16 +6,8 @@
 #define COUT_INFINI (INFINITY) 
 #define INVALIDE (coord_t){.abscisse = -1, .ordonnee = -1} // utile pour que le programme dise si une cellule existe
 
-typedef struct cellule_s {
-    coord_t noeud;
-    float cout;
-    coord_t precedent;
-    struct cellule_s* suivant;
-} cellule_t;
-
-typedef struct liste_noeud_s {
-    cellule_t* tete;
-} liste_noeud_t;
+typedef struct cellule_s cellule_t;
+typedef struct liste_noeud_s liste_noeud_t;
 
 /**
  * creer_liste : crée une liste de noeuds, initialement vide

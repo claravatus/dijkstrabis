@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <math.h>
 
+struct cellule_s {
+    coord_t noeud;
+    float cout;
+    coord_t precedent;
+    struct cellule_s* suivant;
+};
+
+struct liste_noeud_s {
+    cellule_t* tete;
+};
+
 cellule_t* chercher_cellule(const liste_noeud_t* liste, coord_t noeud) {
     cellule_t* trouve = NULL; 
     if (liste != NULL) {
@@ -17,7 +28,6 @@ cellule_t* chercher_cellule(const liste_noeud_t* liste, coord_t noeud) {
     }
     return trouve;
 }
-
 
 liste_noeud_t* creer_liste() {
     liste_noeud_t* liste = malloc(sizeof(liste_noeud_t)); // on donne de la place en mémoire

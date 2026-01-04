@@ -1,5 +1,7 @@
 #include "dijkstra.h"
-#include "animation.h"
+//#include "animation.h"
+#include "grille.h"
+#include <stdlib.h>
 
 /**
  * cout : calcule le coût pour rejoindre le noeud suivant depuis le noeud
@@ -19,8 +21,8 @@
  */
 static float cout(grille_t grille, coord_t courant, coord_t suivant) {
     float dist = distance_euclidienne(courant, suivant);
-    float h_courant = hauteur_grille(grille, courant);
-    float h_suivant = hauteur_grille(grille, suivant);
+    float h_courant = get_hauteur(grille, courant);
+    float h_suivant = get_hauteur(grille, suivant);
     float denivele = h_suivant - h_courant;
     if (denivele < 0) {
         denivele = 0;
@@ -56,7 +58,7 @@ static void construire_chemin_vers(coord_t n, coord_t source, liste_noeud_t* vis
         // (C-3.2) Ajouter au chemin le noeud n_p
         float cout_np = cout_noeud_liste(visites, n_p);
         coord_t prec_np = precedent_noeud_liste(visites, n_p);
-        inserer_noeud_liste(chemin, n_p, cout_np, prec_np);
+        inserer_noeud_liste(chemin, n_p, prec_np, cout_np);
     }
     // ig si la condition n'est pas remplie ça ne fait plus rien et algo fini 
 } 
@@ -68,7 +70,7 @@ float dijkstra(grille_t grille, coord_t source, coord_t destination, float seuil
     float resultat_cout = COUT_INFINI;
     bool trouve = false;
     // (D-1) Ajouter le noeud de départ à cout 0
-    inserer_noeud_liste(a_visiter, source, 0.0, source);
+    inserer_noeud_liste(a_visiter, source, source, 0.0);
     // (D-2) Tant qu'il existe noeud, faire :
     while (!est_vide_liste(a_visiter) && !trouve) {
         // (D-2.1) Noeud courant n_c de coût minimal
@@ -76,7 +78,7 @@ float dijkstra(grille_t grille, coord_t source, coord_t destination, float seuil
         float cout_nc = cout_noeud_liste(a_visiter, n_c);
         coord_t prec_nc = precedent_noeud_liste(a_visiter, n_c);
         // (D-2.2) Ajouter n_c dans Visités
-        inserer_noeud_liste(visites, n_c, cout_nc, prec_nc);
+        inserer_noeud_liste(visites, n_c, prec_nc, cout_nc);
         // (D-2.3) Supprimer n_c de AVisiter
         supprimer_noeud_liste(a_visiter, n_c);
         if (memes_coord(n_c, destination)) {
@@ -90,10 +92,10 @@ float dijkstra(grille_t grille, coord_t source, coord_t destination, float seuil
                 for (size_t i = 0; i < nb_voisins; i++) {
                     coord_t n_v = voisins[i];
                     if (!contient_noeud_liste(visites, n_v)) {
-                        float delta_prime = cout_nc + 1.0; 
+                        float delta_prime = cout_nc + cout(grille, n_c, n_v); 
                         float delta = cout_noeud_liste(a_visiter, n_v);
                         if (delta_prime < delta) {
-                            inserer_noeud_liste(a_visiter, n_v, delta_prime, n_c);
+                            inserer_noeud_liste(a_visiter, n_v, n_c, delta_prime);
                         }
                     }
                 }
@@ -101,12 +103,12 @@ float dijkstra(grille_t grille, coord_t source, coord_t destination, float seuil
                 voisins = NULL;
             }
         }
-
+    }
     if (chemin != NULL) {
         if (resultat_cout != COUT_INFINI) {
             *chemin = creer_liste();
             construire_chemin_vers(destination, source, visites, *chemin);
-            inserer_noeud_liste(*chemin, destination, resultat_cout, precedent_noeud_liste(visites, destination));
+            inserer_noeud_liste(*chemin, destination, precedent_noeud_liste(visites, destination), resultat_cout);
         } else {
             *chemin = NULL;
         }

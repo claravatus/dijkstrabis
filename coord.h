@@ -6,11 +6,11 @@
 #include <stdio.h>   
 
 typedef struct {
-    int abscisse;
-    int ordonnee;
+    int x;
+    int y;
 } coord_t;
 
-coord_t creer_coord(int abscisse, int ordonnee);
+coord_t creer_coord(int x, int y);
 
 int get_x(coord_t point);
 

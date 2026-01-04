@@ -31,7 +31,7 @@
 #include "grille.h"
 #include "liste_noeud.h"
 #include "dijkstra.h"
-#include "animation.h"
+// #include "animation.h"
 
 #define PRECISION   1e-4
 #define TIMEOUT     50 _Millisec
@@ -106,7 +106,7 @@ static grille_t make_grille2(int largeur, int profondeur, ...) {
 }
 
 int main() {
-    disable_animation(); // Au cas où
+    //disable_animation(); // Au cas où
 
     INITIALIZE_TESTS();
     SET_ANALYSIS("test_dijkstra.csv");
